@@ -6,6 +6,10 @@ const postRegisterUserRouter = require("./post.users");
 const getAllUsersRouter = require("./get.users");
 const getUserByIdRouter = require("./get.users");
 
+const putUserDetailsRouter = require("./put.users");
+
+router.use(putUserDetailsRouter);
+
 router.use(postLoginUserRouter);
 router.use(postRegisterUserRouter);
 

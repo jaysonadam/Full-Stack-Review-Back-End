@@ -12,9 +12,9 @@ const postLoginUser = async (req, res, next) => {
             const { username, password } = req.body
         
             const sqlLoginUser = 'SELECT id, username, name FROM users WHERE username = ?;';
-            const dataUser = username;
+            const dataLoginUser = username;
         
-            const result = await connection.query(sqlLoginUser, dataUser)
+            const result = await connection.query(sqlLoginUser, dataLoginUser)
             connection.release();
         
             const user = result[0]
