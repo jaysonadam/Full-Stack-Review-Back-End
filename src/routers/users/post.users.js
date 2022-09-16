@@ -5,16 +5,16 @@ const pool = require("../../config/database/db");
 const postLoginUser = async (req, res, next) => {
     try {
         const connection = await pool.promise().getConnection();
-    	await connection.beginTransaction();
+    	  await connection.beginTransaction();
 
         try {
             const connection = await pool.promise().getConnection();
-            const {username, password} = req.body
+            const { username, password } = req.body
         
             const sqlLoginUser = 'SELECT id, username, name FROM users WHERE username = ?;';
-            const sqlDataUser = username;
+            const dataUser = username;
         
-            const result = await connection.query(sqlLoginUser, sqlDataUser)
+            const result = await connection.query(sqlLoginUser, dataUser)
             connection.release();
         
             const user = result[0]
@@ -29,6 +29,38 @@ const postLoginUser = async (req, res, next) => {
     };
 };
 
+// POST REGISTER
+const postRegisterUser = async (req, res, next) => {
+    try {
+      const connection = await pool.promise().getConnection();
+      await connection.beginTransaction();
+
+      try {
+        const connection = await pool.promise().getConnection();
+
+        const sqlRegister = 'INSERT INTO users SET ?;';
+        const dataRegister = [
+          {
+            username: req.body.username,
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password
+          }
+        ];
+
+        const result = await connection.query(sqlRegister, dataRegister)
+        connection.release();
+
+        res.status(200).send( 'Account successfully created' );
+      } catch (error) {
+        next(error)
+      } 
+    } catch (error) {
+      next (error)
+    }
+};
+
+router.post("/reg", postRegisterUser);
 router.post("/login", postLoginUser);
 
 module.exports = router;
