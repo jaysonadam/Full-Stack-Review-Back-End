@@ -4,6 +4,8 @@ const cors = require("cors");
 const port = 2022;
 
 const userRouter = require('./routers/users/index');
+const productRouter = require('./routers/products/index');
+const categoryRouter = require('./routers/category/index');
 
 // Middleware dari express untuk membaca req.body --> app.use(express.json());
 app.use(cors());
@@ -13,6 +15,8 @@ app.use(express.static("public"));
 // 2. function pada app.use akan dijalankan pada setiap req
 
 app.use('/users', userRouter)
+app.use('/products', productRouter)
+app.use('/category', categoryRouter)
 
 // GET
 // app.get('/', (req, res) => {
