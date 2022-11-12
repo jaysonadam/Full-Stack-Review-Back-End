@@ -34,7 +34,7 @@ const getUserById = async (req, res, next) => {
         try {
             const connection = await pool.promise().getConnection();
         
-            const sqlUserId = 'SELECT username, name, email, password FROM users WHERE id = ?;';
+            const sqlUserId = 'SELECT username, name, email, password, role FROM users WHERE id = ?;';
             const dataUserId = req.params.id;
         
             const result = await connection.query(sqlUserId, dataUserId)

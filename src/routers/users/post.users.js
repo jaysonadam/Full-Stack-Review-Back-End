@@ -9,9 +9,9 @@ const postLoginUser = async (req, res, next) => {
 
         try {
             const connection = await pool.promise().getConnection();
-            const { username, password } = req.body
+            const { username } = req.body
         
-            const sqlLoginUser = 'SELECT id, username, name FROM users WHERE username = ?;';
+            const sqlLoginUser = 'SELECT id, username, role FROM users WHERE username = ?;';
             const dataLoginUser = username;
         
             const result = await connection.query(sqlLoginUser, dataLoginUser)
