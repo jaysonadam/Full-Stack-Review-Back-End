@@ -9,7 +9,7 @@ const getAllUsers = async (req, res, next) => {
         try {
             const connection = await pool.promise().getConnection();
         
-            const sql = 'SELECT * FROM users;';
+            const sql = 'SELECT * FROM students;';
         
             const result = await connection.query(sql)
             connection.release();
@@ -34,8 +34,8 @@ const getUserById = async (req, res, next) => {
         try {
             const connection = await pool.promise().getConnection();
         
-            const sqlUserId = 'SELECT username, name, email, password, role FROM users WHERE id = ?;';
-            const dataUserId = req.params.id;
+            const sqlUserId = 'SELECT username, fullname, email, password, role FROM students WHERE student_id = ?;';
+            const dataUserId = req.params.student_id;
         
             const result = await connection.query(sqlUserId, dataUserId)
             connection.release();
