@@ -3,8 +3,8 @@ const app = express();
 const cors = require("cors");
 const port = 2022;
 
-const teacherRouter = require('./routers/teachers/index');
-const studentRouter = require('./routers/students/index');
+const userRouter = require('./routers/users/index');
+const gradesRouter = require('./routers/grades/index');
 const productRouter = require('./routers/products/index');
 const categoryRouter = require('./routers/category/index');
 
@@ -15,8 +15,8 @@ app.use(express.static("public"));
 // 1. app.use menerima function
 // 2. function pada app.use akan dijalankan pada setiap req
 
-app.use('/teachers', teacherRouter)
-app.use('/students', studentRouter)
+app.use('/users', userRouter)
+app.use('/grades', gradesRouter)
 app.use('/products', productRouter)
 app.use('/category', categoryRouter)
 
