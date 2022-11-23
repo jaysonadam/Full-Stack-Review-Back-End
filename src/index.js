@@ -6,6 +6,7 @@ const port = 2022;
 const userRouter = require('./routers/users/index');
 const gradesRouter = require('./routers/grades/index');
 const productRouter = require('./routers/products/index');
+const subjectsRouter = require('./routers/subjects/index');
 const categoryRouter = require('./routers/category/index');
 
 // Middleware dari express untuk membaca req.body --> app.use(express.json());
@@ -18,6 +19,7 @@ app.use(express.static("public"));
 app.use('/users', userRouter)
 app.use('/grades', gradesRouter)
 app.use('/products', productRouter)
+app.use('/subjects', subjectsRouter)
 app.use('/category', categoryRouter)
 
 // GET
