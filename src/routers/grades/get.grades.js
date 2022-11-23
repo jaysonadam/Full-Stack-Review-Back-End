@@ -11,7 +11,7 @@ const getGradesById = async (req, res, next) => {
         
             const sql = `SELECT u.fullname, g.grades, e.exam_name, e.exam_date FROM grades g
             JOIN exams e ON g.exam_id = e.exam_id
-            JOIN users u ON g.student_id = u.user_id
+            JOIN users u ON g.user_id = u.user_id
             WHERE u.user_id = ${req.params.id} ORDER BY exam_date DESC;`;
         
             const result = await connection.query(sql)
@@ -39,7 +39,7 @@ const getAllGrades = async (req, res, next) => {
         
             const sql = `SELECT u.fullname, g.grades, e.exam_id, e.exam_name FROM grades g
             JOIN exams e ON g.exam_id = e.exam_id
-            JOIN users u ON g.student_id = u.user_id
+            JOIN users u ON g.user_id = u.user_id
             WHERE u.stream_id = ${req.params.stream_id};`;
         
             const result = await connection.query(sql)
@@ -67,7 +67,7 @@ const getFilteredGrades = async (req, res, next) => {
       
           const sql = `SELECT u.fullname, g.grades, e.exam_date, e.exam_name FROM grades g
                        JOIN exams e ON g.exam_id = e.exam_id
-                       JOIN users u ON g.student_id = u.user_id
+                       JOIN users u ON g.user_id = u.user_id
                        WHERE u.stream_id = ${req.params.stream_id} AND e.subject_id = ${req.params.subject_id};`;
       
           const result = await connection.query(sql)

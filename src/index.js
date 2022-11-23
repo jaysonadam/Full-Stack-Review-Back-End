@@ -8,6 +8,7 @@ const gradesRouter = require('./routers/grades/index');
 const productRouter = require('./routers/products/index');
 const subjectsRouter = require('./routers/subjects/index');
 const categoryRouter = require('./routers/category/index');
+const homeworkRouter = require('./routers/homework/index');
 
 // Middleware dari express untuk membaca req.body --> app.use(express.json());
 app.use(cors());
@@ -21,6 +22,7 @@ app.use('/grades', gradesRouter)
 app.use('/products', productRouter)
 app.use('/subjects', subjectsRouter)
 app.use('/category', categoryRouter)
+app.use('/homework', homeworkRouter)
 
 // GET
 // app.get('/', (req, res) => {
