@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const pool = require("../../config/database/db");
 
-const getGradesById = async (req, res, next) => {
+const getGradesByStudentId = async (req, res, next) => {
     try {
         const connection = await pool.promise().getConnection();
     	await connection.beginTransaction();
@@ -38,9 +38,9 @@ const getAllGrades = async (req, res, next) => {
             const connection = await pool.promise().getConnection();
         
             const sql = `SELECT u.fullname, g.grades, e.exam_id, e.exam_name FROM grades g
-            JOIN exams e ON g.exam_id = e.exam_id
-            JOIN users u ON g.user_id = u.user_id
-            WHERE u.stream_id = ${req.params.stream_id};`;
+                         JOIN exams e ON g.exam_id = e.exam_id
+                         JOIN users u ON g.user_id = u.user_id
+                         WHERE u.stream_id = ${req.params.stream_id} ORDER BY exam_date DESC;`;
         
             const result = await connection.query(sql)
             connection.release();
@@ -68,7 +68,7 @@ const getFilteredGrades = async (req, res, next) => {
           const sql = `SELECT u.fullname, g.grades, e.exam_date, e.exam_name FROM grades g
                        JOIN exams e ON g.exam_id = e.exam_id
                        JOIN users u ON g.user_id = u.user_id
-                       WHERE u.stream_id = ${req.params.stream_id} AND e.subject_id = ${req.params.subject_id};`;
+                       WHERE u.stream_id = ${req.params.stream_id} AND e.subject_id = ${req.params.subject_id} ORDER BY exam_date DESC;`;
       
           const result = await connection.query(sql)
           connection.release();
@@ -85,7 +85,7 @@ const getFilteredGrades = async (req, res, next) => {
   };
 };
 
-router.get('/:id', getGradesById)
+router.get('/:id', getGradesByStudentId)
 router.get('/:stream_id', getAllGrades)
 router.get('/:stream_id/:subject_id', getFilteredGrades)
 
