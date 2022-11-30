@@ -52,7 +52,33 @@ const getUserById = async (req, res, next) => {
     };
 };
 
+const getStudentsByStream = async (req, res, next) => {
+  try {
+      const connection = await pool.promise().getConnection();
+    await connection.beginTransaction();
+
+      try {
+          const connection = await pool.promise().getConnection();
+      
+          const sqlUserId = `SELECT user_id, fullname FROM users WHERE stream_id = ${req.params.stream_id} AND role = 'student';`;
+      
+          const result = await connection.query(sqlUserId)
+          connection.release();
+      
+          const users = result[0]
+      
+          res.status(200).send({ users });
+
+        } catch (error) {
+          next(error)
+        }
+  } catch (error) {
+    next (error)
+  };
+};
+
 router.get("/all", getAllUsers);
 router.get("/:id", getUserById);
+router.get("/all/:stream_id", getStudentsByStream);
 
 module.exports = router;
