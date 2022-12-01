@@ -1,13 +1,9 @@
 const router = require("express").Router();
 
-const getFilteredGradesRouter = require('./get.grades');
-const getGradesByStudentIdRouter = require('./get.grades');
-const getStreamGradesRouter = require('./get.grades');
-const getGradesByExamIdRouter = require('./get.grades');
+const getAllGradesRouter = require('./get.grades');
+const getSearchGradesRouter = require('./get.grades');
 
-router.use(getFilteredGradesRouter);
-router.use(getGradesByStudentIdRouter);
-router.use(getStreamGradesRouter);
-router.use(getGradesByExamIdRouter);
+router.use(getAllGradesRouter);
+router.use(getSearchGradesRouter);
 
 module.exports = router;
