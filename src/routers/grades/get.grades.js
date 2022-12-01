@@ -53,38 +53,39 @@ const getGrades = async (req, res, next) => {
     };
 };
 
-// const getAllGrades = async (req, res, next) => {
-//     try {
-//         const connection = await pool.promise().getConnection();
-//     	  await connection.beginTransaction();
+const getAllGrades = async (req, res, next) => {
+    try {
+        const connection = await pool.promise().getConnection();
+    	  await connection.beginTransaction();
 
-//         try {
-//             const connection = await pool.promise().getConnection();
+        try {
+            const connection = await pool.promise().getConnection();
         
-//             const sqlCount = `SELECT COUNT(*) AS count FROM grades g
-//                               JOIN exams e ON g.exam_id = e.exam_id
-//                               WHERE e.stream_id = ${req.params.stream_id};`;
+            const sqlCount = `SELECT COUNT(*) AS count FROM grades g
+                              JOIN exams e ON g.exam_id = e.exam_id
+                              WHERE e.stream_id = ${req.params.stream_id};`;
 
-//             const sql = `SELECT u.fullname, g.grades, e.exam_date, e.exam_name FROM grades g
-//                          JOIN exams e ON g.exam_id = e.exam_id
-//                          JOIN users u ON g.user_id = u.user_id
-//                          JOIN streams s ON u.stream_id = s.stream_id
-//                          WHERE s.stream_id = ${req.params.stream_id} ORDER BY exam_date DESC;`;
+            const sql = `SELECT u.fullname, g.grades, e.exam_date, e.exam_name FROM grades g
+                         JOIN exams e ON g.exam_id = e.exam_id
+                         JOIN users u ON g.user_id = u.user_id
+                         JOIN streams s ON u.stream_id = s.stream_id
+                         WHERE s.stream_id = ${req.params.stream_id} ORDER BY exam_date DESC;`;
 
-//             const [result] = await connection.query(sql)
-//             const [count] = await connection.query(sqlCount)
-//             connection.release();
+            const [result] = await connection.query(sql)
+            const [count] = await connection.query(sqlCount)
+            connection.release();
                      
-//             res.status(200).send({ result, count });
+            res.status(200).send({ result, count });
 
-//           } catch (error) {
-//             next(error)
-//           }
-//     } catch (error) {
-//       next (error)
-//     };
-// };
+          } catch (error) {
+            next(error)
+          }
+    } catch (error) {
+      next (error)
+    };
+};
 
 router.get('/', getGrades)
+router.get('/:stream_id', getAllGrades)
 
 module.exports = router;
