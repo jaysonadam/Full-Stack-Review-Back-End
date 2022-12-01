@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const pool = require("../../config/database/db");
 
-const getSearchGrades = async (req, res, next) => {
+const getGrades = async (req, res, next) => {
     try {
         const connection = await pool.promise().getConnection();
     	  await connection.beginTransaction();
@@ -9,7 +9,7 @@ const getSearchGrades = async (req, res, next) => {
         try {
             const connection = await pool.promise().getConnection();
 
-            const { exam_id: exam_id_param, user_id: user_id_param, subject_id: subject_id_param } = req.query;
+            const { exam_id: exam_id_param, user_id: user_id_param, subject_id: subject_id_param, stream_id: stream_id_param } = req.query;
 
             let filter;
 
@@ -23,6 +23,8 @@ const getSearchGrades = async (req, res, next) => {
                 filter = `WHERE e.subject_id = '${subject_id_param}' ORDER BY exam_date DESC`
             } else if (user_id_param) {
                 filter = `WHERE u.user_id = '${user_id_param}' ORDER BY g.grades DESC`
+            } else if (stream_id_param) {
+                filter = `WHERE s.stream_id = '${stream_id_param}' ORDER BY exam_date DESC`
             };
         
             const sqlCount = `SELECT COUNT(*) AS count FROM grades g
@@ -51,39 +53,38 @@ const getSearchGrades = async (req, res, next) => {
     };
 };
 
-const getAllGrades = async (req, res, next) => {
-    try {
-        const connection = await pool.promise().getConnection();
-    	  await connection.beginTransaction();
+// const getAllGrades = async (req, res, next) => {
+//     try {
+//         const connection = await pool.promise().getConnection();
+//     	  await connection.beginTransaction();
 
-        try {
-            const connection = await pool.promise().getConnection();
+//         try {
+//             const connection = await pool.promise().getConnection();
         
-            const sqlCount = `SELECT COUNT(*) AS count FROM grades g
-                              JOIN exams e ON g.exam_id = e.exam_id
-                              WHERE e.stream_id = ${req.params.stream_id};`;
+//             const sqlCount = `SELECT COUNT(*) AS count FROM grades g
+//                               JOIN exams e ON g.exam_id = e.exam_id
+//                               WHERE e.stream_id = ${req.params.stream_id};`;
 
-            const sql = `SELECT u.fullname, g.grades, e.exam_date, e.exam_name FROM grades g
-                         JOIN exams e ON g.exam_id = e.exam_id
-                         JOIN users u ON g.user_id = u.user_id
-                         JOIN streams s ON u.stream_id = s.stream_id
-                         WHERE s.stream_id = ${req.params.stream_id} ORDER BY exam_date DESC;`;
+//             const sql = `SELECT u.fullname, g.grades, e.exam_date, e.exam_name FROM grades g
+//                          JOIN exams e ON g.exam_id = e.exam_id
+//                          JOIN users u ON g.user_id = u.user_id
+//                          JOIN streams s ON u.stream_id = s.stream_id
+//                          WHERE s.stream_id = ${req.params.stream_id} ORDER BY exam_date DESC;`;
 
-            const [result] = await connection.query(sql)
-            const [count] = await connection.query(sqlCount)
-            connection.release();
+//             const [result] = await connection.query(sql)
+//             const [count] = await connection.query(sqlCount)
+//             connection.release();
                      
-            res.status(200).send({ result, count });
+//             res.status(200).send({ result, count });
 
-          } catch (error) {
-            next(error)
-          }
-    } catch (error) {
-      next (error)
-    };
-};
+//           } catch (error) {
+//             next(error)
+//           }
+//     } catch (error) {
+//       next (error)
+//     };
+// };
 
-router.get('/', getSearchGrades)
-router.get('/:stream_id', getAllGrades)
+router.get('/', getGrades)
 
 module.exports = router;
