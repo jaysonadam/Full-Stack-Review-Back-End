@@ -6,6 +6,7 @@ const port = 2022;
 const examRouter = require('./routers/exam/index');
 const userRouter = require('./routers/users/index');
 const gradesRouter = require('./routers/grades/index');
+const submitRouter = require('./routers/submit-hw/index');
 const productRouter = require('./routers/products/index');
 const subjectsRouter = require('./routers/subjects/index');
 const categoryRouter = require('./routers/category/index');
@@ -21,6 +22,7 @@ app.use(express.static("public"));
 app.use('/exam', examRouter)
 app.use('/users', userRouter)
 app.use('/grades', gradesRouter)
+app.use('/submit', submitRouter)
 app.use('/products', productRouter)
 app.use('/subjects', subjectsRouter)
 app.use('/category', categoryRouter)
