@@ -10,13 +10,14 @@ const getHomeworkById = async (req, res, next) => {
         try {
             const connection = await pool.promise().getConnection();
         
-            const sql = `SELECT * FROM homework WHERE homework_name = '${req.query.homework_name}';`;
+            const sql = `SELECT homework_name FROM homework WHERE homework_name = '${req.query.homework_name}';`;
             const result = await connection.query(sql)
             connection.release();
         
             const hw = result[0]
+            const hasil = hw[0]
         
-            res.status(200).send({ hw });
+            res.status(200).send({ hasil });
 
           } catch (error) {
             next(error)
