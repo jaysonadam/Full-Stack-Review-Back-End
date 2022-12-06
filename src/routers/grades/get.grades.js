@@ -95,7 +95,7 @@ const getStudentGrades = async (req, res, next) => {
       
           const sqlCount = `SELECT COUNT(*) AS count FROM grades g
                             JOIN exams e ON g.exam_id = e.exam_id
-                            WHERE e.stream_id = ${req.params.stream_id} AND g.user_id = ${req.params.user_id};`;
+                            WHERE e.stream_id = ${req.params.stream_id} AND gj.user_id = ${req.params.user_id};`;
 
           const sql = `SELECT u.fullname, g.grades, e.exam_date, e.exam_name FROM grades g
                        JOIN exams e ON g.exam_id = e.exam_id
