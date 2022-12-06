@@ -1,6 +1,31 @@
 const router = require("express").Router();
 const pool = require("../../config/database/db");
 
+// Homework ID
+const getHomeworkById = async (req, res, next) => {
+    try {
+        const connection = await pool.promise().getConnection();
+        await connection.beginTransaction();
+
+        try {
+            const connection = await pool.promise().getConnection();
+        
+            const sql = `SELECT * FROM homework WHERE homework_name = '${req.query.homework_name}';`;
+            const result = await connection.query(sql)
+            connection.release();
+        
+            const hw = result[0]
+        
+            res.status(200).send({ hw });
+
+          } catch (error) {
+            next(error)
+          }
+    } catch (error) {
+      next (error)
+    };
+  };
+
 // Stream ID
 const getHomeworkByStream = async (req, res, next) => {
     try {
@@ -57,6 +82,7 @@ const getHomeworkBySubject = async (req, res, next) => {
   };
 };
 
+router.get('/', getHomeworkById);
 router.get('/:stream_id', getHomeworkByStream);
 router.get('/:stream_id/:subject_id', getHomeworkBySubject);
 
