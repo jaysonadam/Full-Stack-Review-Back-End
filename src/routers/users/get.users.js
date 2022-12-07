@@ -59,15 +59,15 @@ const getStudentsByStream = async (req, res, next) => {
 
       try {
           const connection = await pool.promise().getConnection();
-      
+
+          const sqlCount = `SELECT COUNT(*) AS count FROM users WHERE stream_id = ${req.params.stream_id} AND role = 'student';`;
           const sqlUserId = `SELECT user_id, fullname FROM users WHERE stream_id = ${req.params.stream_id} AND role = 'student';`;
       
-          const result = await connection.query(sqlUserId)
+          const [users] = await connection.query(sqlUserId)
+            const [count] = await connection.query(sqlCount)
           connection.release();
       
-          const users = result[0]
-      
-          res.status(200).send({ users });
+          res.status(200).send({ users, count });
 
         } catch (error) {
           next(error)

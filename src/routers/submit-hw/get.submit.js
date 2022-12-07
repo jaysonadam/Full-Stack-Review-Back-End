@@ -1,6 +1,38 @@
 const router = require("express").Router();
 const pool = require("../../config/database/db");
 
+const getAllSubmittedHw = async (req, res, next) => {
+    try {
+        const connection = await pool.promise().getConnection();
+    	  await connection.beginTransaction();
+
+        try {
+            const connection = await pool.promise().getConnection();
+        
+            const sqlCount = `SELECT COUNT(*) AS count FROM submit s
+                              JOIN homework h ON s.homework_id = h.homework_id
+                              JOIN users u ON s.user_id = u.user_id
+                              WHERE h.stream_id = ${req.params.stream_id} ORDER BY due_date DESC;`;
+
+            const sql = `SELECT s.homework_id, h.homework_name, u.user_id, u.fullname, s.created_at, filename FROM  submit s
+                        JOIN homework h ON s.homework_id = h.homework_id
+                        JOIN users u ON s.user_id = u.user_id
+                        WHERE h.stream_id = ${req.params.stream_id} ORDER BY due_date DESC;`;
+                         
+            const [result] = await connection.query(sql)
+            const [count] = await connection.query(sqlCount)
+            connection.release();
+        
+            res.status(200).send({ result, count });
+
+          } catch (error) {
+            next(error)
+          }
+    } catch (error) {
+      next (error)
+    };
+};
+
 const getSubmittedHw = async (req, res, next) => {
     try {
         const connection = await pool.promise().getConnection();
@@ -48,6 +80,6 @@ const getSubmittedHw = async (req, res, next) => {
 };
 
 router.get('/', getSubmittedHw)
-// router.get('/:stream_id', getAllSubmittedHw)
+router.get('/:stream_id', getAllSubmittedHw)
 
 module.exports = router;

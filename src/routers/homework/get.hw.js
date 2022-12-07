@@ -36,7 +36,7 @@ const getHomeworkByStream = async (req, res, next) => {
         try {
             const connection = await pool.promise().getConnection();
         
-            const sql = `SELECT h.homework_name, h.homework_desc, h.due_date FROM homework h
+            const sql = `SELECT h.homework_id, h.homework_name, h.homework_desc, h.due_date FROM homework h
             JOIN subjects s ON h.subject_id = s.subject_id
             WHERE s.stream_id = ${req.params.stream_id} ORDER BY h.due_date DESC;`;
         
