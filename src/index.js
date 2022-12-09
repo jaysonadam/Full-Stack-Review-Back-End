@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 const port = 2022;
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
@@ -22,18 +22,19 @@ app.use(express.static("public"));
 // 1. app.use menerima function
 // 2. function pada app.use akan dijalankan pada setiap req
 
-app.use(upload.array()); 
+// app.use(bodyParser.json());
+// app.use(forms.array()); 
+// app.use(bodyParser.urlencoded({ extended: true }));
 
-// for parsing application/json
-app.use(express.json()); 
+// app.use(upload.array()); 
 
-// for parsing application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true })); 
+// // for parsing application/json
+// app.use(express.json()); 
 
-app.post('/submit', function (req, res) {
-    console.log(req.body);
-    res.send(req.body)
-});
+// // for parsing application/x-www-form-urlencoded
+// app.use(express.urlencoded({ extended: true })); 
+
+app.post('/submit', upload.array(), submitRouter);
 
 app.use('/exam', examRouter)
 app.use('/users', userRouter)
